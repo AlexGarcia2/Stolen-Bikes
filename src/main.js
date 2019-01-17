@@ -6,9 +6,13 @@ import $ from 'jquery';
 import './styles.css';
 
 $(document).ready(function() {
-
+  $("#submitButton").click(function() {
+    let location = $('#location').val();
+    $('#location').val("");
+    let distance = parseInt($('#distance').val());
+    $('#distance').val("");
     let bikePromiseObject = new BikePromise();
-    let promise = bikePromiseObject.stolenInfo();
+    let promise = bikePromiseObject.stolenInfo(location,distance);
 
     promise.then(function(response) {
       let body = JSON.parse(response);
@@ -19,13 +23,15 @@ $(document).ready(function() {
     }, function(error){
       $(".error").text(`There is an error processing your request : ${error.message}`);
     });
-    function keyParse (body) {
+  });
 
-      let summary = "";
-      for (let i = 0; i < body.bikes.length; i++) {
-        summary += `<div class="bike"><p>title: ${body.bikes[i].title}<p/></div>`;
-      }
-      $('#stuff').append(summary);
+  function keyParse (body) {
+
+    let summary = "";
+    for (let i = 0; i < body.bikes.length; i++) {
+      summary += `<div class="bike"><p>title: ${body.bikes[i].title}<p/></div>`;
     }
+    $('#stuff').append(summary);
+  }
   // });
 });
